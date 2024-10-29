@@ -1,8 +1,7 @@
-package com.ecommerece.commentservice.dtos;
+package com.ecommerece.productservice.dtos;
 
 import lombok.*;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 

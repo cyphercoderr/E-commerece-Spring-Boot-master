@@ -1,4 +1,4 @@
-package com.ecommerece.commentservice.exceptions;
+package com.ecommerece.productservice.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException() {

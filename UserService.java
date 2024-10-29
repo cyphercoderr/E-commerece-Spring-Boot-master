@@ -1,4 +1,4 @@
-package com.ecommerece.commentservice.external.services;
+package com.ecommerece.productservice.external.services;
 
 import org.springframework.cloud.openfeign.FeignClient;
 

@@ -1,4 +1,4 @@
-package com.ecommerece.commentservice.exceptions;
+package com.ecommerece.productservice.exceptions;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.hibernate.exception.DataException;

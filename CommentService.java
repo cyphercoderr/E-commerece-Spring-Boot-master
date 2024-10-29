@@ -1,21 +1,15 @@
-package com.ecommerece.commentservice.services;
+package com.ecommerece.productservice.external.services;
 
-import com.ecommerece.commentservice.dtos.CommentDto;
+import com.ecommerece.productservice.dtos.CommentDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Map;
 
+@FeignClient(name = "COMMENT-SERVICE")
 public interface CommentService {
-    CommentDto saveComment(String productId, CommentDto comment);
-    List<CommentDto> getAllComments();
-    List<CommentDto> getProductComments(String productId);
-    List<CommentDto> getUserComments(String userId);
-    CommentDto getComment(String commentId);
-    void deleteComment(String commentId);
-    CommentDto updateComment(String commentId,CommentDto comment);
-    CommentDto updateCommentFields(Map<String, Object> fields, String id);
-
-
-    //TODO: handle null in delete
-    //TODO: update
+    @GetMapping("c/products/{productId}")
+    ResponseEntity<List<CommentDto>> getProductComments(@PathVariable String productId);
 }

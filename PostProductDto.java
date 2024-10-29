@@ -2,19 +2,22 @@ package com.ecommerece.productservice.dtos;
 
 import com.ecommerece.productservice.entities.ImageModel;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductDto {
+public class PostProductDto {
     @Column(unique = true)
     private String id;
     @NotBlank(message = "Product name is mandatory")
@@ -30,9 +33,5 @@ public class ProductDto {
     @Max(value = 1000000, message = "Price must be at maximum 1000000")
     private BigDecimal price;
     private String userId;
-    private List<CommentDto> comments = new ArrayList<CommentDto>();
-    private List<ImageModel> images;
-
-    // Display picture URL from cloudinary will also stored here as a property
+    private MultipartFile[] imageFiles;
 }
-
