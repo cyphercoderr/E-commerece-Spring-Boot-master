@@ -1,10 +1,12 @@
-package com.ecommerece.productservice.dtos;
+package com.ecommerece.userservice.dtos;
 
-import com.ecommerece.productservice.entities.ImageModel;
 import lombok.*;
 
 import javax.persistence.Column;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,6 @@ public class ProductDto {
     private BigDecimal price;
     private String userId;
     private List<CommentDto> comments = new ArrayList<CommentDto>();
-    private List<ImageModel> images;
 
     // Display picture URL from cloudinary will also stored here as a property
 }

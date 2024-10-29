@@ -1,65 +1,84 @@
-package com.ecommerece.productservice.controllers;
+package com.ecommerece.userinterface.controllers;
 
-import com.cloudinary.Cloudinary;
-import com.ecommerece.productservice.dtos.PostProductDto;
-import com.ecommerece.productservice.dtos.ProductDto;
-import com.ecommerece.productservice.services.ProductService;
-import org.springframework.http.HttpStatus;
+import com.ecommerece.userinterface.external.dtos.CommentDto;
+import com.ecommerece.userinterface.external.dtos.GetProductDto;
+import com.ecommerece.userinterface.external.dtos.PostProductDto;
+import com.ecommerece.userinterface.external.models.CartItem;
+import com.ecommerece.userinterface.external.services.ApiResponse;
+import feign.FeignException;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping("p")
+@Controller
 public class ProductController {
-    private final ProductService productService;
-    private final Cloudinary cloudinary;
+    private final ApiResponse apiResponse;
 
-    public ProductController(ProductService productService, Cloudinary cloudinary) {
-        this.productService = productService;
-        this.cloudinary = cloudinary;
-    }
-    @PostMapping(value = {"/users/{userId}/products"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ProductDto> createProduct(@PathVariable String userId, @Valid PostProductDto product) {
-
-        ProductDto product1 = productService.saveProduct(userId, product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product1);
-    }
-    @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductDto> getProduct(@PathVariable String productId) {
-        ProductDto product = productService.getProduct(productId);
-        return ResponseEntity.ok(product);
-    }
-    @GetMapping("/products")
-    public ResponseEntity<List<ProductDto>> getAllProduct() {
-        List<ProductDto> allProducts = productService.getAllProducts();
-        return ResponseEntity.ok(allProducts);
+    public ProductController(ApiResponse apiResponse) {
+        this.apiResponse = apiResponse;
     }
 
-    @GetMapping("/users/{userId}/products")
-    public ResponseEntity<List<ProductDto>> getUserProducts(@PathVariable String userId) {
-        List<ProductDto> userProducts = productService.getUserProducts(userId);
-        return ResponseEntity.ok(userProducts);
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(Model model) {
+        List<GetProductDto> productDtos = apiResponse.getAllProduct();
+        model.addAttribute("products", productDtos);
+        return "products/index";
     }
-
-    @PutMapping(value = "/products/{productId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ProductDto updateProduct(@PathVariable String productId ,@Valid PostProductDto product){
-        return productService.updateProduct(productId,product);
+    @RequestMapping(value = "/users/{userId}/products", method = RequestMethod.GET)
+    public String userIndex(Model model,@PathVariable String userId) {
+        List<GetProductDto> productDtos = apiResponse.getUserProducts(userId);
+        model.addAttribute("products", productDtos);
+        return "products/index";
     }
-
-    @PatchMapping("/products/{productId}")
-    public ProductDto updateProductFields(@PathVariable String productId ,@RequestBody Map<String, Object> product){
-        return productService.updateProductFields(product ,productId);
+    @GetMapping(value = "/products/{productId}")
+    public String show(Model model, @PathVariable String productId) {
+        GetProductDto productDto = apiResponse.getProduct(productId);
+        CommentDto commentDto = new CommentDto();
+        CartItem cartItem = new CartItem();
+        model.addAttribute("product", productDto);
+        model.addAttribute("newComment", commentDto);
+        model.addAttribute("cartItem", cartItem);
+        return "products/show";
+    }
+    @GetMapping("users/{userId}/products/new")
+    public String newProduct(Model model, @PathVariable String userId) {
+        model.addAttribute("product", new PostProductDto());
+        model.addAttribute("userId", userId);
+        return "products/new";
+    }
+    @RequestMapping(value = "/users/{userId}/products", method = RequestMethod.POST)
+    public String create(@PathVariable String userId, @ModelAttribute PostProductDto product, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) return "redirect:/products/new";
+        GetProductDto productDto = new GetProductDto();
+        try {
+            productDto = apiResponse.createProduct(userId, product);
+        }catch (FeignException e){
+           System.out.println(e.getMessage());
+           return "redirect:/products/new";
+        }
+        return "redirect:/products/" + productDto.getId();
+    }
+    @GetMapping("/products/{productId}/edit")
+    public String editProduct(Model model, @PathVariable String productId) {
+        GetProductDto productDto = apiResponse.getProduct(productId);
+        model.addAttribute("product", productDto);
+        return "products/edit";
+    }
+    @PutMapping(value = "/products/{productId}")
+    public String updateProduct(@PathVariable String productId , @ModelAttribute PostProductDto postProductDto){
+        GetProductDto getProductDto = apiResponse.updateProduct(productId, postProductDto);
+        return "redirect:/";
     }
     @DeleteMapping("/products/{productId}")
-    public void deleteProduct(@PathVariable String productId){
-        productService.deleteProduct(productId);
+    public String deleteProduct(@PathVariable String productId){
+        apiResponse.deleteProduct(productId);
+        return ("redirect:/");
     }
-
 }

@@ -1,4 +1,4 @@
-package com.ecommerece.productservice.dtos;
+package com.ecommerece.userservice.dtos;
 
 import lombok.*;
 

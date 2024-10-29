@@ -1,19 +1,26 @@
-package com.ecommerece.productservice.dtos;
+package com.ecommerece.userservice.dtos;
 
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class UserDto {
-    private String id;
-    private String username;
-    private String email;
-    private String password;
-    private String contact;
+import java.util.ArrayList;
+import java.util.List;
 
-    // Display picture URL from cloudinary will also stored here as a property
-}
+@Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public class UserDto {
+        private String id;
+        private String username;
+        private String email;
+        private String password;
+        private String contact;
+
+        private String imageUrl;
+
+        private List<ProductDto> products = new ArrayList<ProductDto>();
+
+        // Display picture URL from cloudinary will also stored here as a property
+    }
 

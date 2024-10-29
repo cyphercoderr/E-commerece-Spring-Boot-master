@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: header"></head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="container">
+  <div>
+    <h1>Add Product</h1>
+    <form th:action="@{/users/{userId}/products(userId = 1)}" th:object="${product}" method="post" enctype="multipart/form-data">
+<!--      <div>-->
+<!--        <div class="field m-1">-->
+          <label>
+            Name: <input name="productName" type="text" th:field="*{productName}" />
+          </label>
+<!--        </div>-->
+<!--        <div class="field m-1">-->
+          <label>
+            Description: <input name="description" type="text" th:field="*{description}" />
+          </label>
+<!--        </div>-->
+<!--        <div class="field m-1">-->
+          <label>
+            Quantity: <input  name="availableQuantity" type="number" th:field="*{availableQuantity}" min= 1 />
+          </label>
+<!--        </div>-->
+<!--        <div class="field m-1">-->
+          <label>
+            Price: <input  name="price" type="number" th:field="*{price}" min= 1 />
+          </label>
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div th:name="imageFile">-->
+<!--        <div class="field m-1">-->
+          <label>
+            Images: <input type="file" name="imageFiles" multiple/>
+          </label>
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="field m-1">-->
+        <label>
+          <input type="submit" value="submit"/>
+        </label>
+<!--      </div>-->
+    </form>
+  </div>
+<!--  <%= form_with model: model_type, local: true do |form| %>-->
+<!--  <% if product.errors.any? %>-->
+<!--  <div id="error_explanation">-->
+<!--    <h2><%= pluralize(product.errors.count, "error") %> Prohibited this product from being saved:</h2>-->
+
+<!--    <ul>-->
+<!--      <% product.errors.full_messages.each do |message| %>-->
+<!--      <li><%= message %></li>-->
+<!--      <% end %>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--  <% end %>-->
+
+<!--  <div class="field">-->
+<!--    <%= form.label :name %>-->
+<!--    <%= form.text_field :name %>-->
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%= form.label :description %>-->
+<!--    <%= form.text_field :description %>-->
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%= form.label :quantity %>-->
+<!--    <%= form.number_field :quantity, min: 1 %>-->
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%= form.label :price %>-->
+<!--    <%= form.number_field :price, min: 1 %>-->
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%= form.label :images %><br />-->
+<!--    <%= form.file_field :images, multiple: true, autofocus: true, accept:'image/*' %>-->
+<!--  </div>-->
+
+<!--  <div class="actions">-->
+<!--    <%= form.submit %>-->
+<!--  </div>-->
+<!--  <% end %>-->
+
+
+
+<!--  <form th:action="@{/products}" th:object="${restaurant}" method="post">-->
+
+<!--    <table>-->
+<!--      <tr>-->
+<!--        <td><label>Name</label></td>-->
+<!--        <td><input type="text" th:field="*{name}" /></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td><label>Address</label></td>-->
+<!--        <td><input type="text" th:field="*{address}" /></td>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td><input type="submit" value="Submit" /></td>-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--  </form>-->
+
+
+</div>
+</body>
+</html>

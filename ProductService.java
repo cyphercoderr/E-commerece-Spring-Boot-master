@@ -1,23 +1,15 @@
-package com.ecommerece.productservice.services;
+package com.ecommerece.userservice.external.services;
 
-import com.ecommerece.productservice.dtos.PostProductDto;
-import com.ecommerece.productservice.dtos.ProductDto;
-import com.ecommerece.productservice.entities.Product;
-import org.springframework.web.multipart.MultipartFile;
+import com.ecommerece.userservice.dtos.ProductDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Map;
 
+@FeignClient(name = "PRODUCT-SERVICE")
 public interface ProductService {
-    ProductDto saveProduct(String userId, PostProductDto product);
-    List<ProductDto> getAllProducts();
-    List<ProductDto> getUserProducts(String userId);
-    ProductDto getProduct(String productId);
-    void deleteProduct(String productid);
-    ProductDto updateProduct(String productid,PostProductDto product);
-    ProductDto updateProductFields(Map<String, Object> fields, String id);
-
-
-    //TODO: handle null in delete
-    //TODO: update
+    @GetMapping("users/{userId}/products")
+    public ResponseEntity<List<ProductDto>> getUserProducts(@PathVariable String userId);
 }
